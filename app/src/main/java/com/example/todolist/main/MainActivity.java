@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent addEdit = new Intent(MainActivity.this, AddEditActivity.class);
+                startActivity(addEdit);
             }
         });
     }

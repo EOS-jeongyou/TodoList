@@ -1,78 +1,30 @@
 package com.example.todolist.room;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import android.content.Context;
 
-@Entity(tableName = "TODO")
-public class MyDatabase {
-    @PrimaryKey(autoGenerate = true)
-    int id;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
-    @ColumnInfo(name = "title")
-    private String title;
-    @ColumnInfo(name = "checked")
-    private boolean checked;
-    @ColumnInfo(name = "start")
-    private String start;
-    @ColumnInfo(name = "due")
-    private String due;
-    @ColumnInfo(name = "memo")
-    private String memo;
+@Database(version = 1, entities = {TodoItem.class})
+public abstract class MyDatabase extends RoomDatabase{
 
-    public MyDatabase(String title, String start, String due, String memo) {
-        this.title = title;
-        this.start = start;
-        this.due = due;
-        this.memo = memo;
-        checked = false;
+    abstract public TodoDao todoDao();
+
+    private static MyDatabase myDatabase;
+
+    public static MyDatabase getInstance(Context context){
+        if(myDatabase == null){
+            myDatabase = Room.databaseBuilder(context.getApplicationContext(),
+                    MyDatabase.class, "myDatabase.db")
+                    .allowMainThreadQueries()
+                    .build();
+        }
+        return  myDatabase;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getDue() {
-        return due;
-    }
-
-    public void setDue(String due) {
-        this.due = due;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }

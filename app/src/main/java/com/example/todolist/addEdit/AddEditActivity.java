@@ -43,7 +43,7 @@ public class AddEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit);
 
         //TODO : mode 가져오기
-        mode = getIntent().getExtras().getInt("mode");
+        mode = getIntent().getIntExtra("mode",-1);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
         {
@@ -73,6 +73,9 @@ public class AddEditActivity extends AppCompatActivity {
             //TODO : 수정
 
             //TODO : id 가져오기
+
+            id = getIntent().getIntExtra("item_id",-1);
+
             if(id == -1)
             {
                 Log.d("Todo id", "item id wrong");
@@ -174,8 +177,8 @@ public class AddEditActivity extends AppCompatActivity {
                 {
                     if(sDate.compareTo(dDate) > 0)
                     {
-                        til_sDate.setError("시간을 역행하시는군요!");
-                        til_dDate.setError("저도 그 방법 좀 알려줘요!");
+                        til_sDate.setError("시작일이 마감일보다 뒤에 있습니다");
+                        til_dDate.setError("마감일이 시작일보다 앞에 있습니다");
                     }
                     else
                     {

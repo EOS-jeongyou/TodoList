@@ -132,7 +132,7 @@ public class AddEditActivity extends AppCompatActivity {
                 String s_month = new Integer(month+1).toString();
                 String s_date = new Integer(dayOfMonth).toString();
 
-                if(month < 10)
+                if(month < 9)
                     s_month = "0" + new Integer(month+1).toString();
                 if(dayOfMonth < 10)
                     s_date = "0" + new Integer(dayOfMonth).toString();
@@ -187,7 +187,10 @@ public class AddEditActivity extends AppCompatActivity {
                         if(mode == 0)
                         {
                             TodoItem todoItem = new TodoItem(title,sDate,dDate,memo);
-                                    myDatabase.todoDao().insertTodo(todoItem);
+                            Toast.makeText(AddEditActivity.this, title+sDate+dDate+memo, Toast.LENGTH_SHORT).show();
+                            myDatabase.todoDao().insertTodo(todoItem);
+                            Toast.makeText(AddEditActivity.this, "New file save Success", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                         else if(mode == 1)
                         {
@@ -198,10 +201,12 @@ public class AddEditActivity extends AppCompatActivity {
 
                             myDatabase.todoDao().editTodo(selectItem);
                             Toast.makeText(AddEditActivity.this, "Save Success", Toast.LENGTH_SHORT).show();
+                            finish();
 
                         }
                     }
                 }
+                break;
         }
 
         return super.onOptionsItemSelected(item);

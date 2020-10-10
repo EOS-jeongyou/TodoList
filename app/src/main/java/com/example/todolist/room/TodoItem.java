@@ -6,7 +6,7 @@ package com.example.todolist.room;
         import androidx.room.PrimaryKey;
 
 @Entity(tableName = "TODO")
-public class TodoItem {
+public class TodoItem implements Comparable<TodoItem>{
     @PrimaryKey(autoGenerate = true)
     int id;
 
@@ -75,5 +75,10 @@ public class TodoItem {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    @Override
+    public int compareTo(TodoItem item) {
+        return this.due.compareTo(item.due);
     }
 }

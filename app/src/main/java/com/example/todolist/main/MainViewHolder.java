@@ -47,13 +47,13 @@ public class MainViewHolder extends RecyclerView.ViewHolder {
         //left
         Calendar cal = Calendar.getInstance();
         int mYear = cal.get(Calendar.YEAR);
-        int mMonth = cal.get(Calendar.MONTH);
+        int mMonth = cal.get(Calendar.MONTH) + 1;
         int mDay = cal.get(Calendar.DAY_OF_MONTH);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy / mm / dd");
 
         Date dDate = simpleDateFormat.parse(item.getDue());
-        Date today = simpleDateFormat.parse(mYear + " / " + mMonth + " / " + mDay);
+        Date today = simpleDateFormat.parse(mYear + "/" + mMonth + "/" + mDay);
         Long left = -(dDate.getTime() - today.getTime()) / (24*60*60*1000);
 
         if(left.intValue() < 0)

@@ -3,6 +3,7 @@ package com.example.todolist.main;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,41 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
+import com.example.todolist.addEdit.AddEditActivity;
 import com.example.todolist.room.MyDatabase;
 import com.example.todolist.room.TodoItem;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainViewHolder> {
-
     private List<TodoItem> itemList = new ArrayList<>();
+
+    public void submitAll(List<TodoItem> list)
+    {
+        itemList.clear();
+        itemList.addAll(list);
+        Collections.sort(itemList);
+        notifyDataSetChanged();
+    }
+    public void removeAll()
+    {
+        itemList.clear();
+        notifyDataSetChanged();
+    }
+    public void removeAllItem(List<TodoItem> newlist)
+    {
+        itemList.clear();
+        itemList = newlist;
+        notifyDataSetChanged();
+    }
+    public boolean checkItem(TodoItem item)
+    {
+        return item.isChecked();
+    }
+
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
@@ -49,19 +75,34 @@ public class MainAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     public void onClick(DialogInterface dialogInterface, int which) {
                          switch (items[which]) {
                              case "수정":
+                                 Intent intent = new Intent(parent.getContext(), AddEditActivity.class);
+                                 intent.putExtra("mode",1);
+                                 intent.putExtra("item_id",temp.getId());
+                                 break;
                              case "삭제":
+                                itemList.remove(temp);
+                                MyDatabase myDatabase = MyDatabase.getInstance(parent.getContext());
+                                myDatabase.todoDao().deleteTodo(temp);
+                                notifyItemRemoved(viewHolder.getAdapterPosition());
+                                break;
                              case "취소":
+                                 break;
                          }
                     }
                 });
-                temp.setChecked(!temp.isChecked());
+
+                // 이것의 존재 의의를 찾아야 함
+                /*temp.setChecked(!temp.isChecked());
                 MyDatabase myDatabase = MyDatabase.getInstance(parent.getContext());
                 myDatabase.todoDao().editTodo(temp);
-                notifyItemChanged(viewHolder.getAdapterPosition());
+                notifyItemChanged(viewHolder.getAdapterPosition());*/
+                builder.show();
                 return false;
             }
         });
-        return null;
+
+
+        return viewHolder;
     }
 
     @Override
